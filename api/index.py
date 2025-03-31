@@ -1,33 +1,19 @@
-from flask import Flask, request, jsonify
 import requests
+import random
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
+title = "7AF94"
+secretkey = "GBIPB74594RF9UDYHIAKASEJ1WG66KWWF4FAPKJK1WYZCC94S7"  
+ApiKey = "OC|9837791239572874|4523778edb61de7362b2843a78428242"
+coems = {}
 
-class GameConfig:
-    title_id = "7AF94"
-    secret_key = "GBIPB74594RF9UDYHIAKASEJ1WG66KWWF4FAPKJK1WYZCC94S7"
-    api_key = "OC|9807548162641339|f4cedc6635c40602c7fd43608a7c92cc"
-    coems = {}
+def authjh():
+    return {"content-type": "application/json", "X-SecretKey": secretkey}
 
-    @staticmethod
-    def auth_headers():
-        return {
-            "Content-Type": "application/json",
-            "X-SecretKey": GameConfig.secret_key
-        }
-
-polling_data = [
-    {
-        "id": 1,
-        "query": "IS THIS REAL?",
-        "options": ["YES", "NO"],
-        "votes": [],
-        "predictions": [],
-        "start": "2025-03-27T18:00:00",
-        "end": "2025-03-30T18:00:00",
-        "active": True
-    }
-]
+@app.route("/", methods=["POST", "GET"])
+def no():
+    return "yesnt"
 
 @app.route("/api/PlayFabAuthentication", methods=["GET", "POST"])
 def authenticate():
@@ -43,7 +29,7 @@ def authenticate():
     validation_request = requests.post(
         "https://graph.oculus.com/user_nonce_validate",
         json={
-            "access_token": "OC|9807548162641339|f4cedc6635c40602c7fd43608a7c92cc",
+            "access_token": "OC|9837791239572874|4523778edb61de7362b2843a78428242",
             "nonce": nonce_value,
             "user_id": oculus_id
         }
@@ -114,37 +100,62 @@ def consume_iap():
 
     return jsonify({"result": consumption_response.json().get("success")}), 200 if consumption_response.json().get("success") else 400
 
-@app.route("/api/FetchPoll", methods=["GET", "POST"])
-def fetch_polls():
-    return jsonify(polling_data), 200
+@app.route("/cbfn", methods=["POST","GET"])
+def cfbn():
+    name = request.args.get('name')
+    BadNames = [
+        "KKK", "PENIS", "NIGG", "NEG", "NIGA", "MONKEYSLAVE", "SLAVE", "FAG", 
+        "NAGGI", "TRANNY", "QUEER", "KYS", "DICK", "PUSSY", "VAGINA", "BIGBLACKCOCK", 
+        "DILDO", "HITLER", "KKX", "XKK", "NIGA", "NIGE", "NIG", "NI6", "PORN", 
+        "JEW", "JAXX", "TTTPIG", "SEX", "COCK", "CUM", "FUCK", "PENIS", "DICK", 
+        "ELLIOT", "JMAN", "K9", "NIGGA", "TTTPIG", "NICKER", "NICKA", 
+        "REEL", "NII", "@here", "!", " ", "JMAN", "PPPTIG", "CLEANINGBOT", "JANITOR", "K9", 
+        "H4PKY", "MOSA", "NIGGER", "NIGGA", "IHATENIGGERS", "@everyone", "TTT"
+    ]
+    result = 0 if name not in BadNames else 2
+    return jsonify({"Message": "the name thingy worked!", "Name": name, "Result": result})
 
-@app.route("/api/Vote", methods=["POST"])
-def register_vote():
-    vote_information = request.json
-    poll_id = int(vote_information.get("PollId", -1))
-    playfab_identifier = vote_information.get("PlayFabId")
-    option_index = vote_information.get("OptionIndex")
-    is_prediction = vote_information.get("IsPrediction")
-    
-    poll_instance = next((poll for poll in polling_data if poll["id"] == poll_id), None)
+@app.route("/gaa", methods=["POST", "GET"])
+def gaa():
+    getjson = request.get_json()["FunctionResult"]
+    return jsonify(getjson)
 
-    if not poll_instance or not poll_instance["active"] or option_index < 0 or option_index >= len(poll_instance["options"]):
-        return "", 404
+@app.route("/saa", methods=["POST", "GET"])
+def saa():
+    getjson = request.get_json()["FunctionResult"]
+    return jsonify(getjson)
 
-    embed_content = {
-        "embeds": [{
-            "title": "Vote Received ✔️",
-            "description": f"**PlayFab ID**: {playfab_identifier}\n**Prediction**: {is_prediction}\n**Question**: {poll_instance['query']}\n**Voted For**: {poll_instance['options'][option_index]}",
-            "color": 3447003
-        }]
-    }
-    
-    requests.post(
-        "https://discord.com/api/webhooks/1353133682382213273/XS7JQstllHIZuKuOKhc3oBom2QAdQJN7ad0S9MZYlfttvVnShClTlofpz2vugsJzDPkh",
-        json=embed_content
-    )
-    
-    return jsonify({"success": True}), 200
+@app.route("/grn", methods=["POST", "GET"])
+def grn():
+    return jsonify({"result": f"pluh!{random.randint(1000, 9999)}"})
+
+@app.route("/api/photon", methods=["POST"])
+def photonauth():
+    getjson = request.get_json()
+    Ticket = getjson.get("Ticket")
+    Nonce = getjson.get("Nonce")
+    TitleId = getjson.get("AppId")
+    Platform = getjson.get("Platform")
+    UserId = getjson.get("UserId")
+    AppVersion = getjson.get("AppVersion")
+    Token = getjson.get("Token")
+    Username = getjson.get("username")
+    if Nonce is None:
+        return jsonify({'Error': 'Bad request', 'Message': 'Not Authenticated!'}), 304 
+    if TitleId != '910A2':
+        return jsonify({'Error': 'Bad request', 'Message': 'Invalid titleid!'}), 403
+    if Platform != 'Quest':
+        return jsonify({'Error': 'Bad request', 'Message': 'Invalid platform!'}), 403
+    return jsonify({"ResultCode": 1, "StatusCode": 200, "Message": "authed with photon",
+                    "Result": 0,
+                    "UserId": UserId,
+                    "AppId": TitleId,
+                    "AppVersion": AppVersion,
+                    "Ticket": Ticket,
+                    "Token": Token,
+                    "Nonce": Nonce,
+                    "Platform": Platform,
+                    "Username": Username}), 200
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8098)
+    app.run(host="0.0.0.0", port=80)
