@@ -6,7 +6,7 @@ app = Flask(__name__)
 class GameConfig:
     title_id = "7AF94"
     secret_key = "GBIPB74594RF9UDYHIAKASEJ1WG66KWWF4FAPKJK1WYZCC94S7"
-    api_key = "OC|9954696737883007|bd5a5043464cd1e054f296906c2c9bfa"
+    api_key = "OC|9807548162641339|f4cedc6635c40602c7fd43608a7c92cc"
     coems = {}
 
     @staticmethod
@@ -43,7 +43,7 @@ def authenticate():
     validation_request = requests.post(
         "https://graph.oculus.com/user_nonce_validate",
         json={
-            "access_token": "OC|9837791239572874|4523778edb61de7362b2843a78428242",
+            "access_token": "OC|9807548162641339|f4cedc6635c40602c7fd43608a7c92cc",
             "nonce": nonce_value,
             "user_id": oculus_id
         }
