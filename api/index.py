@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 title = "7AF94"
 secretkey = "GBIPB74594RF9UDYHIAKASEJ1WG66KWWF4FAPKJK1WYZCC94S7"  
-ApiKey = "OC|9837791239572874|4523778edb61de7362b2843a78428242"
+ApiKey = "OC|9807548162641339|f4cedc6635c40602c7fd43608a7c92cc"
 coems = {}
 
 def authjh():
@@ -29,7 +29,7 @@ def authenticate():
     validation_request = requests.post(
         "https://graph.oculus.com/user_nonce_validate",
         json={
-            "access_token": "OC|9837791239572874|4523778edb61de7362b2843a78428242",
+            "access_token": "OC|9807548162641339|f4cedc6635c40602c7fd43608a7c92cc",
             "nonce": nonce_value,
             "user_id": oculus_id
         }
